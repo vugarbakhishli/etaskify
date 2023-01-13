@@ -1,0 +1,5 @@
+rootProject.name = 'etaskify'
+include 'common'
+include 'common-security'
+include 'user-ms' //8080
+

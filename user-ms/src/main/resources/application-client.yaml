@@ -1,0 +1,13 @@
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+
+client:
+  organization-ms:
+    name: organization-ms
+    host: ${ORGANIZATION_MS:http://localhost:8081}
+    path: /organization-ms

@@ -1,0 +1,61 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.1' apply false
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
+	id 'java'
+}
+
+def javaProjects = [
+		project(':user-ms')
+
+]
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+allprojects {
+	repositories {
+		mavenCentral()
+	}
+	apply plugin: 'java'
+
+	group = 'az.bakhishli'
+	def hash = 'git rev-parse --short HEAD'.execute().text.trim()
+	version = "$projectVersion.$hash"
+
+	dependencies {
+		implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+		implementation "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+		implementation "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+		implementation 'org.codehaus.groovy:groovy-json:3.0.9'
+	}
+
+}
+
+subprojects {
+
+	sourceCompatibility = jdk_version
+	targetCompatibility = jdk_version
+}
+
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'mysql:mysql-connector-java'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
