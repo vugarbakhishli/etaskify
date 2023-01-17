@@ -58,7 +58,7 @@ public final class JwtService {
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(Instant.now().plus(duration)))
                 .setHeader(Map.of("type","JWT"))
-                .addClaims(Map.of("role", userAuthorities))
+                .addClaims(Map.of("roles", userAuthorities))
                 .signWith(key, SignatureAlgorithm.HS512);
 
         addClaimsSets(jwtBuilder, authentication);

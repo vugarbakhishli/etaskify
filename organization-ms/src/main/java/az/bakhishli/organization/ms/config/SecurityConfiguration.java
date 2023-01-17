@@ -1,4 +1,4 @@
-package az.bakhishli.user.ms.config;
+package az.bakhishli.organization.ms.config;
 
 import az.bakhishli.common.security.UserRole;
 import az.bakhishli.common.security.auth.services.JwtService;
@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
 
@@ -32,13 +31,12 @@ public class SecurityConfiguration extends BaseSecurityConfig {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .antMatchers("/organization/**/").permitAll();
+//        http.authorizeRequests()
+//                .antMatchers("/organization/create").authenticated();
         http.authorizeRequests()
-                .antMatchers("/auth/login/").permitAll()
-                //.antMatchers("/auth/**").permitAll()
-                .antMatchers("/users/**").permitAll()
-                .antMatchers("/auth/register/**")
-                .permitAll();
-        http.authorizeRequests().antMatchers( "/auth/current-user")
+                .antMatchers("/organization/create")
                 .access(authorities(ROLE_ORGANIZATION_ADMIN));
         super.configure(http);
     }

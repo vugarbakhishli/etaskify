@@ -23,7 +23,7 @@ import static az.bakhishli.common.HttpConstants.BEARER_AUTH_HEADER;
 @RequiredArgsConstructor
 public final class TokenAuthService implements AuthService {
 
-    public static final String ROLES_CLAIM = "rules";
+    public static final String ROLES_CLAIM = "roles";
     private final JwtService jwtService;
 
     @Override

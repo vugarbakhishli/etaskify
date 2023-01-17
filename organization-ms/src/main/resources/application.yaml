@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: EtaskifyOrganizationMs
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+    include:
+      - client
+      - common
+      - db
+      - security
+#  main:
+#    allow-bean-definition-overriding: true

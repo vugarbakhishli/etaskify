@@ -23,7 +23,8 @@ public class JwtAuthRequestFilter extends OncePerRequestFilter {
     private final List<AuthService> authServices;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws IOException, ServletException {
         log.trace("Filtering request against auth services {}", authServices);
         Optional<Authentication> authOptional = Optional.empty();
