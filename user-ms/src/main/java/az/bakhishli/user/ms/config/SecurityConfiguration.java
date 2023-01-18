@@ -39,6 +39,8 @@ public class SecurityConfiguration extends BaseSecurityConfig {
                 .antMatchers("/auth/register/**")
                 .permitAll();
         http.authorizeRequests().antMatchers( "/auth/current-user")
+                .access(authorities(ROLE_ORGANIZATION_ADMIN))
+                .antMatchers("/user/create-organization-user")
                 .access(authorities(ROLE_ORGANIZATION_ADMIN));
         super.configure(http);
     }

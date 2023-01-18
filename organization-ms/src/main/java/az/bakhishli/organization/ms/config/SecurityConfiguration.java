@@ -37,6 +37,8 @@ public class SecurityConfiguration extends BaseSecurityConfig {
 //                .antMatchers("/organization/create").authenticated();
         http.authorizeRequests()
                 .antMatchers("/organization/create")
+                .access(authorities(ROLE_ORGANIZATION_ADMIN))
+                .antMatchers("/employee/create")
                 .access(authorities(ROLE_ORGANIZATION_ADMIN));
         super.configure(http);
     }

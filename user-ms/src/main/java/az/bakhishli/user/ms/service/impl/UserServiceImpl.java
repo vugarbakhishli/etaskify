@@ -1,5 +1,6 @@
 package az.bakhishli.user.ms.service.impl;
 
+import az.bakhishli.common.dto.user.CreateOrganizationUserDto;
 import az.bakhishli.common.security.auth.services.SecurityService;
 import az.bakhishli.user.ms.domain.Authority;
 import az.bakhishli.user.ms.domain.User;
@@ -23,7 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static az.bakhishli.common.security.UserRole.ROLE_ORGANIZATION_ADMIN;
-import static az.bakhishli.common.security.UserRole.ROLE_USER;
+import static az.bakhishli.common.security.UserRole.ROLE_ORGANIZATION_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +75,22 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public UserResponseDto createOrganizationUser(CreateOrganizationUserDto dto) {
+        userRepository.findByEmail(dto.getEmail())
+                .ifPresent(user -> {
+                    throw new EmailAlreadyUsedException(dto.getEmail());
+                });
+        User user = createUserEntity(dto);
+        User save = userRepository.save(user);
+        return UserResponseDto.builder()
+                .id(save.getId())
+                .username(save.getUsername())
+                .email(save.getEmail())
+                .build();
+    }
+
     private String getCurrentLogin() {
         return securityService.getCurrentUserLogin().orElseThrow(
                 () ->  new RuntimeException("User not found!"));
@@ -95,5 +112,26 @@ public class UserServiceImpl implements UserService {
         user.setCredentialsNonExpired(true);
         return user;
     }
+
+    private User createUserEntity(CreateOrganizationUserDto dto) {
+        User user = User.builder().
+                username(dto.getName().toLowerCase().concat(dto.getSurname().toLowerCase()))
+                .email(dto.getEmail()).build();
+        Authority authority = Authority.builder()
+                .authority(ROLE_ORGANIZATION_USER.toString())
+                .build();
+        authorityRepository.save(authority);
+        Set<Authority> userAuthority = new HashSet<>();
+        userAuthority.add(authority);
+        user.setAuthorities(userAuthority);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setEnabled(true);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        return user;
+    }
+
+
 
 }
